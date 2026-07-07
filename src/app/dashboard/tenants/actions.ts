@@ -47,7 +47,7 @@ export async function createTenant(formData: FormData) {
     .eq('id', property_id)
 
   revalidatePath('/dashboard')
-  redirect('/dashboard')
+  redirect('/dashboard?success=true&message=Inquilino cadastrado com sucesso!')
 }
 
 export async function updateTenant(id: string, formData: FormData) {
@@ -72,7 +72,7 @@ export async function updateTenant(id: string, formData: FormData) {
   }
 
   revalidatePath('/dashboard')
-  redirect('/dashboard')
+  redirect('/dashboard?success=true&message=Inquilino atualizado com sucesso!')
 }
 
 export async function deleteTenant(id: string, property_id: string) {
@@ -95,5 +95,5 @@ export async function deleteTenant(id: string, property_id: string) {
     .eq('id', property_id)
 
   revalidatePath('/dashboard')
-  redirect('/dashboard')
+  redirect('/dashboard?success=true&message=Inquilino removido com sucesso!')
 }

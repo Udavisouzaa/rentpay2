@@ -26,7 +26,7 @@ export async function createProperty(formData: FormData) {
   }
 
   revalidatePath('/dashboard')
-  redirect('/dashboard')
+  redirect('/dashboard?success=true&message=Imóvel cadastrado com sucesso!')
 }
 
 export async function updateProperty(id: string, formData: FormData) {
@@ -50,7 +50,7 @@ export async function updateProperty(id: string, formData: FormData) {
   }
 
   revalidatePath('/dashboard')
-  redirect('/dashboard')
+  redirect('/dashboard?success=true&message=Imóvel atualizado com sucesso!')
 }
 
 export async function deleteProperty(id: string) {
@@ -67,5 +67,5 @@ export async function deleteProperty(id: string) {
   }
 
   revalidatePath('/dashboard')
-  redirect('/dashboard')
+  redirect('/dashboard?success=true&message=Imóvel removido com sucesso!')
 }

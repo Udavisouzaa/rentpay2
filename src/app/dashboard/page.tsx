@@ -175,13 +175,22 @@ export default async function DashboardPage() {
             )
           })
         ) : (
-          <div className="bg-white rounded-xl border border-dashed border-gray-300 p-8 flex flex-col items-center justify-center text-center">
-            <p className="text-sm text-gray-500 mb-4">Você ainda não cadastrou nenhum imóvel.</p>
+          <div className="bg-white rounded-xl border border-dashed border-gray-300 p-12 flex flex-col items-center justify-center text-center">
+            <div className="bg-teal-50 p-4 rounded-full mb-4">
+              <svg className="w-10 h-10 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Você ainda não tem imóveis cadastrados</h3>
+            <p className="text-sm text-gray-500 mb-8 max-w-md">O RentPay funciona muito melhor quando você adiciona seus imóveis e inquilinos. Comece agora mesmo a automatizar suas cobranças!</p>
             <Link
               href="/dashboard/properties/new"
-              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2"
             >
-              Adicionar Primeiro Imóvel
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Cadastrar Primeiro Imóvel
             </Link>
           </div>
         )}

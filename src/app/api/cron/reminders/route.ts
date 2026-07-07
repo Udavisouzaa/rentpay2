@@ -42,7 +42,8 @@ export async function GET(request: Request) {
     today.setHours(0, 0, 0, 0)
 
     for (const invoice of invoices) {
-      const tenant = invoice.tenants
+      // Supabase TS types sometimes infer foreign relations as arrays depending on the schema
+      const tenant = (Array.isArray(invoice.tenants) ? invoice.tenants[0] : invoice.tenants) as any
       if (!tenant || !tenant.email) continue
 
       const dueDate = new Date(invoice.data_vencimento + 'T00:00:00') // T00 para forçar fuso local/UTC seguro

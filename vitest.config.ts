@@ -1,0 +1,15 @@
+import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { loadEnv } from 'vite'
+
+export default defineConfig(({ mode }) => {
+  // Load env files
+  Object.assign(process.env, loadEnv(mode, process.cwd(), ''))
+  
+  return {
+    plugins: [tsconfigPaths()],
+    test: {
+      environment: 'node',
+    },
+  }
+})

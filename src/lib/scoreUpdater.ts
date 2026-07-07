@@ -64,12 +64,11 @@ export async function updateTenantScore(tenantId: string) {
       .from('punctuality_scores')
       .upsert({
         tenant_id: tenantId,
-        score_atual: scoreAtual,
+        score_atual: Math.round(scoreAtual),
         total_pagamentos: totalPagamentos,
         pagamentos_em_dia: pagamentosEmDia,
         pagamentos_atrasados: pagamentosAtrasados,
-        media_dias_atraso: mediaDiasAtraso,
-        updated_at: new Date().toISOString()
+        media_dias_atraso: Math.round(mediaDiasAtraso)
       }, { onConflict: 'tenant_id' })
 
     if (upsertError) {

@@ -11,19 +11,21 @@ const supabase = createClient(
 
 describe('Integração do Score de Pontualidade', () => {
   let testTenantId: string
+  let testPropertyId: string
 
   beforeAll(async () => {
     // Para um teste E2E real, deveríamos criar um inquilino e faturas dummy.
     // Aqui assumimos que vamos pegar o primeiro inquilino disponível no banco de testes.
-    const { data } = await supabase.from('tenants').select('id').limit(1)
+    const { data } = await supabase.from('tenants').select('id, property_id').limit(1)
     if (data && data.length > 0) {
       testTenantId = data[0].id
+      testPropertyId = data[0].property_id
     }
   })
 
   it('deve recalcular o score corretamente quando uma fatura vira atrasada', async () => {
-    if (!testTenantId) {
-      console.warn('Teste pulado: Nenhum inquilino encontrado no banco.')
+    if (!testTenantId || !testPropertyId) {
+      console.warn('Teste pulado: Nenhum inquilino com property_id encontrado no banco.')
       return
     }
 
@@ -35,6 +37,7 @@ describe('Integração do Score de Pontualidade', () => {
       .from('invoices')
       .insert({
         tenant_id: testTenantId,
+        property_id: testPropertyId,
         mes_referencia: 'TESTE-001',
         valor: 1000,
         status: 'pendente',
@@ -81,8 +84,8 @@ describe('Integração do Score de Pontualidade', () => {
 
     const expectedScore = calculatePunctualityScore(mappedInvoices)
 
-    // O valor no banco deve ser exatamente o valor calculado pela função pura do Jules
-    expect(scoreRecord!.score_atual).toBeCloseTo(expectedScore, 5)
+    // O valor no banco deve ser o valor calculado pela função pura do Jules (arredondado, pois o DB é Integer)
+    expect(scoreRecord!.score_atual).toBe(Math.round(expectedScore))
 
     // Limpeza do teste
     await supabase.from('invoices').delete().eq('id', newInvoice.id)

@@ -2,11 +2,15 @@
 
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function TenantLoginPage() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -15,22 +19,38 @@ export default function TenantLoginPage() {
 
     const supabase = createClient()
     
-    // Configura a URL de redirecionamento para o callback
-    const redirectUrl = `${window.location.origin}/portal/auth/callback`
-
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      options: {
-        emailRedirectTo: redirectUrl,
-      },
+      password
     })
 
     if (error) {
       console.error('Login error:', error)
       setStatus('error')
+      setErrorMessage('Credenciais inválidas.')
+    } else {
+      setStatus('success')
+      router.push('/portal')
+    }
+  }
+
+  const quickLogin = async (e: string, p: string) => {
+    setEmail(e)
+    setPassword(p)
+    
+    setStatus('loading')
+    const supabase = createClient()
+    const { error } = await supabase.auth.signInWithPassword({
+      email: e,
+      password: p
+    })
+    
+    if (error) {
+      setStatus('error')
       setErrorMessage(error.message)
     } else {
       setStatus('success')
+      router.push('/portal')
     }
   }
 
@@ -47,32 +67,10 @@ export default function TenantLoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-sm sm:rounded-xl sm:px-10 border border-gray-200">
-          {status === 'success' ? (
-            <div className="rounded-md bg-emerald-50 p-4 border border-emerald-100">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-emerald-800">
-                    Link Mágico enviado!
-                  </h3>
-                  <div className="mt-2 text-sm text-emerald-700">
-                    <p>
-                      Enviamos um link de acesso seguro para <strong>{email}</strong>. 
-                      Verifique sua caixa de entrada e clique no link para entrar no portal.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
             <form className="space-y-6" onSubmit={handleLogin}>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Qual é o seu e-mail cadastrado?
+                  Email
                 </label>
                 <div className="mt-1">
                   <input
@@ -84,6 +82,24 @@ export default function TenantLoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="voce@email.com"
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent sm:text-sm text-gray-900 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Senha
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent sm:text-sm text-gray-900 transition-colors"
                   />
                 </div>
@@ -101,11 +117,36 @@ export default function TenantLoginPage() {
                   disabled={status === 'loading'}
                   className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 transition-colors"
                 >
-                  {status === 'loading' ? 'Enviando...' : 'Receber Link Mágico'}
+                  {status === 'loading' ? 'Entrando...' : 'Entrar no Portal'}
                 </button>
               </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <p className="text-xs text-gray-500 text-center mb-3 font-medium uppercase tracking-wider">Acesso Rápido de Teste</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button 
+                    type="button"
+                    onClick={() => quickLogin('inquilino1@rentpay.com', 'Senha454*')}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs py-2 rounded transition-colors"
+                  >
+                    Inquilino 1
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => quickLogin('inquilino2@rentpay.com', 'inquilino2')}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs py-2 rounded transition-colors"
+                  >
+                    Inquilino 2
+                  </button>
+                </div>
+              </div>
+              
+              <div className="text-center mt-4">
+                <Link href="/login" className="text-sm text-gray-400 hover:text-gray-600 underline">
+                  Voltar para Área do Locador
+                </Link>
+              </div>
             </form>
-          )}
         </div>
       </div>
     </div>

@@ -66,19 +66,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-      {/* Top Bar - Header Minimalista */}
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-teal-600 rounded-md flex items-center justify-center text-white font-bold text-xl shadow-sm">
-            R
-          </div>
-          <h2 className="text-xl font-medium text-gray-900 dark:text-white">RentPay</h2>
-        </div>
-        <div className="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-medium text-sm shadow-sm">
-          DC
-        </div>
-      </div>
-
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-center">

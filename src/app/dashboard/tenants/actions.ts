@@ -92,7 +92,7 @@ export async function createTenant(formData: FormData) {
           <p>No seu Portal do Inquilino você poderá acompanhar suas faturas, ver seu Score de Pontualidade e abrir chamados de manutenção.</p>
           <br/>
           <div style="background: #f3f4f6; padding: 16px; border-radius: 8px;">
-            <p style="margin-top:0;"><strong>Acesso ao Portal:</strong> <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/portal/login">Clique aqui</a></p>
+            <p style="margin-top:0;"><strong>Acesso ao Portal:</strong> <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://alugho.com.br'}/portal/login">Clique aqui</a></p>
             <p><strong>E-mail:</strong> ${email}</p>
             <p style="margin-bottom:0;"><strong>Senha temporária:</strong> ${tempPassword}</p>
           </div>

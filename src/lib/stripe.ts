@@ -38,8 +38,8 @@ export async function createPayment(email: string, valor: number, descricao: str
         invoice_id: invoiceId,
       },
     },
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/dashboard/invoices?success=true`,
-    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/dashboard/invoices?canceled=true`,
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://alugho.com.br'}/dashboard/invoices?success=true`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://alugho.com.br'}/dashboard/invoices?canceled=true`,
   })
 
   return {

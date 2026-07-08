@@ -51,7 +51,7 @@ export default async function TenantPortalPage() {
 
   const tenantData = {
     name: tenant.nome,
-    propertyAddress: tenant.properties?.endereco || 'Desconhecido',
+    propertyAddress: Array.isArray(tenant.properties) ? tenant.properties[0]?.endereco : (tenant.properties as any)?.endereco || 'Desconhecido',
     ownerName: 'Administrador Alugho' // Poderíamos buscar o owner_id se tivéssemos a relação na tabela.
   }
 

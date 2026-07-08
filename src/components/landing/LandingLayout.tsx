@@ -51,7 +51,7 @@ export function LandingLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1">{children}</main>
 
       <a
-        href="https://wa.me/5511999999999?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20Alugho"
+        href="https://wa.me/5548992084726?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20Alugho"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-[0_4px_14px_0_rgba(37,211,102,0.39)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.23)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center animate-pulse"

@@ -42,63 +42,91 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 })
   }
 
-  // 2. Tratar evento de pagamento confirmado
-  // O checkout.session.completed ocorre quando a sessão gerada em /api/cron/daily é paga
+  // 2. Tratar eventos do Stripe
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
-    const invoiceId = session.metadata?.invoice_id
 
-    if (!invoiceId) {
-      console.error(`Erro: Session ${session.id} não possui invoice_id na metadata.`)
-      // Retornar 200 para o Stripe não ficar tentando reenviar um evento inválido nosso
-      return NextResponse.json({ received: true })
+    // FLUXO A: PAGAMENTO DE ALUGUEL DO INQUILINO
+    if (session.mode === 'payment') {
+      const invoiceId = session.metadata?.invoice_id
+      if (!invoiceId) return NextResponse.json({ received: true })
+
+      console.log(`Processando pagamento para a fatura ID: ${invoiceId}`)
+      const { data: currentInvoice, error: fetchError } = await supabase
+        .from('invoices')
+        .select('status, tenant_id')
+        .eq('id', invoiceId)
+        .single()
+
+      if (!fetchError && currentInvoice?.status !== 'pago') {
+        await supabase
+          .from('invoices')
+          .update({
+            status: 'pago',
+            data_pagamento: new Date().toISOString().split('T')[0],
+            metodo_pagamento: 'stripe'
+          })
+          .eq('id', invoiceId)
+          
+        updateTenantScore(currentInvoice.tenant_id).catch(err => console.error(err))
+      }
+    } 
+    // FLUXO B: ASSINATURA DO LOCADOR (SaaS Billing)
+    else if (session.mode === 'subscription') {
+      // O metadata pode vir do root da sessão
+      const supabaseUserId = session.client_reference_id || session.metadata?.supabase_user_id
+      const subscriptionId = session.subscription as string
+      const customerId = session.customer as string
+
+      if (subscriptionId && customerId) {
+        console.log(`Ativando assinatura ${subscriptionId} para o customer ${customerId}`)
+        
+        // Busca a assinatura direto do Stripe para pegar o status e current_period_end
+        const subscription: any = await stripe.subscriptions.retrieve(subscriptionId)
+
+        if (supabaseUserId) {
+          await supabase
+            .from('subscriptions')
+            .upsert({
+              user_id: supabaseUserId,
+              stripe_customer_id: customerId,
+              stripe_subscription_id: subscriptionId,
+              status: subscription.status,
+              current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
+            }, { onConflict: 'user_id' })
+        } else {
+          // Atualiza baseando-se no customerId que já existe
+          await supabase
+            .from('subscriptions')
+            .update({
+              stripe_subscription_id: subscriptionId,
+              status: subscription.status,
+              current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
+            })
+            .eq('stripe_customer_id', customerId)
+        }
+      }
     }
+  } 
+  // 3. Atualizações na Assinatura (Renovação, Cancelamento, Atraso)
+  else if (event.type === 'customer.subscription.updated' || event.type === 'customer.subscription.deleted') {
+    const subscription = event.data.object as any
+    const subscriptionId = subscription.id
 
-    console.log(`Processando pagamento para a fatura ID: ${invoiceId}`)
+    console.log(`Atualizando status da assinatura ${subscriptionId} para ${subscription.status}`)
 
-    // 3. Checar Idempotência (verificar se já foi pago)
-    const { data: currentInvoice, error: fetchError } = await supabase
-      .from('invoices')
-      .select('status, tenant_id')
-      .eq('id', invoiceId)
-      .single()
-
-    if (fetchError || !currentInvoice) {
-      console.error(`Fatura não encontrada no Supabase: ${invoiceId}`)
-      return NextResponse.json({ error: 'Invoice not found' }, { status: 404 })
-    }
-
-    if (currentInvoice.status === 'pago') {
-      console.log(`Idempotência: Fatura ${invoiceId} já estava marcada como paga. Ignorando evento duplicado.`)
-      return NextResponse.json({ received: true })
-    }
-
-    // 4. Atualizar o status para pago
-    const { error: updateError } = await supabase
-      .from('invoices')
+    await supabase
+      .from('subscriptions')
       .update({
-        status: 'pago',
-        data_pagamento: new Date().toISOString().split('T')[0],
-        metodo_pagamento: 'stripe'
+        status: subscription.status,
+        current_period_end: new Date(subscription.current_period_end * 1000).toISOString()
       })
-      .eq('id', invoiceId)
-
-    if (updateError) {
-      console.error(`Erro ao atualizar status da fatura ${invoiceId}:`, updateError)
-      return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
-    }
-
-    console.log(`Fatura ${invoiceId} marcada como PAGA com sucesso.`)
-
-    // 5. Disparar recálculo do score
-    updateTenantScore(currentInvoice.tenant_id).catch(err => {
-      console.error(`Erro no background updateTenantScore para tenant ${currentInvoice.tenant_id}:`, err)
-    })
+      .eq('stripe_subscription_id', subscriptionId)
   } else {
     console.log(`Evento ${event.type} ignorado (Não mapeado).`)
   }
 
-  // 6. Responder rapidamente ao Stripe
+  // Responder rapidamente ao Stripe
   return NextResponse.json({ received: true })
 }
 

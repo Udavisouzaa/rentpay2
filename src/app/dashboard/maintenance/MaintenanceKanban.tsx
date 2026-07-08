@@ -12,32 +12,15 @@ import {
   defaultDropAnimationSideEffects,
 } from '@dnd-kit/core'
 import { updateRequestStatus } from './actions'
+import { MapPin, CheckCircle2 } from 'lucide-react'
 
-type RequestItem = any // Using any for simplicity as it matches the original component
+type RequestItem = any
 
 const COLUMNS = [
-  { id: 'aberto', title: 'Abertos', emptyText: 'Nenhum chamado aberto.' },
-  { id: 'andamento', title: 'Em Andamento', emptyText: 'Nenhum reparo em andamento.' },
-  { id: 'resolvido', title: 'Resolvidos', emptyText: 'Sem histórico de chamados.' },
+  { id: 'aberto', title: 'Abertos', emptyText: 'Nenhum chamado aberto.', color: 'border-l-rose-400', badgeColor: 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400' },
+  { id: 'andamento', title: 'Em Andamento', emptyText: 'Nenhum reparo em andamento.', color: 'border-l-amber-400', badgeColor: 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' },
+  { id: 'resolvido', title: 'Resolvidos', emptyText: 'Sem histórico de chamados.', color: 'border-l-emerald-400', badgeColor: 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400', icon: CheckCircle2 },
 ]
-
-function getStatusColor(status: string) {
-  switch (status) {
-    case 'aberto': return 'bg-orange-50 text-orange-700'
-    case 'andamento': return 'bg-amber-50 text-amber-700'
-    case 'resolvido': return 'bg-emerald-50 text-emerald-700'
-    default: return 'bg-gray-100 text-gray-800'
-  }
-}
-
-function getStatusText(status: string) {
-  switch (status) {
-    case 'aberto': return 'Aberto'
-    case 'andamento': return 'Em Andamento'
-    case 'resolvido': return 'Resolvido'
-    default: return status
-  }
-}
 
 function Card({ req, isOverlay }: { req: RequestItem, isOverlay?: boolean }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -49,65 +32,83 @@ function Card({ req, isOverlay }: { req: RequestItem, isOverlay?: boolean }) {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
   } : undefined
 
+  const col = COLUMNS.find(c => c.id === req.status) || COLUMNS[0]
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...listeners}
       {...attributes}
-      className={`bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow group cursor-grab active:cursor-grabbing ${isDragging ? 'opacity-50' : ''} ${isOverlay ? 'rotate-2 scale-105 shadow-xl' : ''}`}
+      className={`bg-white dark:bg-gray-800 p-5 rounded-3xl border-l-4 shadow-sm border border-slate-200 dark:border-gray-700 cursor-grab active:cursor-grabbing hover:shadow-md transition-all group ${col.color} ${isDragging ? 'opacity-50' : ''} ${req.status === 'resolvido' ? 'opacity-70 hover:opacity-100' : ''} ${isOverlay ? 'rotate-2 scale-105 shadow-xl' : ''}`}
     >
-      <div className="flex justify-between items-start mb-2">
-        <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${getStatusColor(req.status)}`}>
-          {getStatusText(req.status)}
+      <div className="flex justify-between items-start mb-2 pointer-events-none">
+        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${col.badgeColor}`}>
+          Chamado #{req.id.toString().padStart(3, '0')}
         </span>
-        <span className="text-[10px] text-gray-400 font-medium">
+        <span className="text-[10px] text-slate-400 dark:text-gray-500 font-medium">
           {new Date(req.created_at).toLocaleDateString('pt-BR')}
         </span>
       </div>
       
-      <p className="text-sm font-medium text-gray-900 dark:text-white mb-0.5 pointer-events-none">
-        {req.tenants?.nome || 'Desconhecido'}
-      </p>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 truncate pointer-events-none">
-        {req.properties?.endereco || 'Desconhecido'}
-      </p>
-
-      <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 mb-3 bg-gray-50 dark:bg-gray-900/50 p-2 rounded text-xs pointer-events-none">
+      <h4 className="font-bold text-slate-800 dark:text-white line-clamp-2 leading-tight pr-4 text-sm mb-3 mt-2 pointer-events-none">
         {req.descricao}
-      </p>
+      </h4>
+      
+      <div className="space-y-2 pointer-events-none">
+        <div className="flex items-center text-slate-500 dark:text-gray-400 text-xs">
+          <MapPin className="w-3.5 h-3.5 mr-2 shrink-0 text-slate-400 dark:text-gray-500" />
+          <span className="truncate font-medium">{req.properties?.endereco || 'Desconhecido'}</span>
+        </div>
+        <div className="flex items-center text-slate-500 dark:text-gray-400 text-xs mt-1">
+          <span className="truncate font-medium ml-5 text-[10px]">De: {req.tenants?.nome || 'Desconhecido'}</span>
+        </div>
+      </div>
 
       {req.foto_url && (
-        <div className="block mb-1 pointer-events-none">
-          <div className="h-24 w-full rounded border border-gray-200 dark:border-gray-600 overflow-hidden relative group-hover:border-teal-500 transition-colors">
-            <img src={req.foto_url} alt="Foto" className="object-cover w-full h-full" />
+        <div className="mt-3 block pointer-events-none">
+          <div className="h-20 w-full rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden relative">
+            <img src={req.foto_url} alt="Foto" className="object-cover w-full h-full opacity-80" />
           </div>
         </div>
       )}
+      
+      <div className="mt-4 flex items-center justify-between border-t border-slate-100 dark:border-gray-700 pt-3 pointer-events-none">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-gray-700 border border-slate-200 dark:border-gray-600 flex items-center justify-center font-bold text-xs text-slate-500">?</div>
+          <span className="text-[10px] font-medium text-slate-500 dark:text-gray-400">Atribuir</span>
+        </div>
+        {col.icon && (
+           <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold text-[10px] uppercase tracking-wider">
+             <col.icon className="w-3.5 h-3.5" />
+             Resolvido
+           </div>
+        )}
+      </div>
     </div>
   )
 }
 
-function Column({ id, title, emptyText, items }: { id: string, title: string, emptyText: string, items: RequestItem[] }) {
+function Column({ col, items }: { col: typeof COLUMNS[0], items: RequestItem[] }) {
   const { setNodeRef, isOver } = useDroppable({
-    id,
+    id: col.id,
   })
 
   return (
-    <div className={`flex flex-col rounded-xl border p-4 h-full transition-colors ${isOver ? 'bg-teal-50/50 border-teal-200 dark:bg-teal-900/20 dark:border-teal-800' : 'bg-gray-50/50 dark:bg-gray-800/30 border-gray-200 dark:border-gray-700'}`}>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-medium text-gray-900 dark:text-white">{title}</h3>
-        <span className="bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full text-xs font-medium border border-gray-200 dark:border-gray-600">
+    <div className={`flex flex-col min-w-[300px] rounded-3xl p-2 transition-colors ${isOver ? 'bg-slate-50 dark:bg-gray-800/50' : ''}`}>
+      <div className="flex items-center space-x-2 mb-4 px-2">
+        <h3 className="font-bold text-slate-900 dark:text-white">{col.title}</h3>
+        <span className={`text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider ${col.badgeColor}`}>
           {items.length}
         </span>
       </div>
 
-      <div ref={setNodeRef} className="flex flex-col gap-3 flex-1 min-h-[150px]">
+      <div ref={setNodeRef} className="flex flex-col gap-4 flex-1 min-h-[200px]">
         {items.length > 0 ? (
           items.map((req) => <Card key={req.id} req={req} />)
         ) : (
-          <div className="flex-1 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center p-6 text-center text-sm text-gray-400 dark:text-gray-500 bg-transparent">
-            {emptyText}
+          <div className="flex-1 border-2 border-dashed border-slate-200 dark:border-gray-700 rounded-3xl flex items-center justify-center p-6 text-center text-sm text-slate-400 bg-transparent">
+            {col.emptyText}
           </div>
         )}
       </div>
@@ -123,7 +124,7 @@ export function MaintenanceKanban({ initialItems }: { initialItems: RequestItem[
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5, // Requires 5px movement before drag starts, allows clicking inner elements if needed
+        distance: 5,
       },
     })
   )
@@ -144,20 +145,17 @@ export function MaintenanceKanban({ initialItems }: { initialItems: RequestItem[
     const card = items.find((i) => i.id === cardId)
     if (!card || card.status === newStatus) return
 
-    // Optimistic Update
     setItems((prev) => 
       prev.map((item) => 
         item.id === cardId ? { ...item, status: newStatus } : item
       )
     )
 
-    // Background Server Action
     startTransition(async () => {
       try {
         await updateRequestStatus(cardId, newStatus)
       } catch (err) {
         console.error('Erro ao mover card:', err)
-        // Revert on error
         setItems(initialItems)
       }
     })
@@ -175,9 +173,7 @@ export function MaintenanceKanban({ initialItems }: { initialItems: RequestItem[
         {COLUMNS.map((col) => (
           <Column 
             key={col.id}
-            id={col.id}
-            title={col.title}
-            emptyText={col.emptyText}
+            col={col}
             items={items.filter(i => i.status === col.id)}
           />
         ))}

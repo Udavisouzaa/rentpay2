@@ -16,13 +16,13 @@ export default async function NewContractPage() {
   const { data: properties } = await supabase
     .from('properties')
     .select('id, endereco')
-    .eq('owner_id', user.id)
+    .eq('user_id', user.id)
 
   // Buscar inquilinos do usuário
   const { data: tenants } = await supabase
     .from('tenants')
     .select('id, nome')
-    .eq('owner_id', user.id)
+    .eq('user_id', user.id)
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">

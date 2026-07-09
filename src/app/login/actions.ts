@@ -16,7 +16,15 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.error('Login error:', error)
-    redirect(`/login?error=${encodeURIComponent(error.message)}`)
+    
+    let ptMessage = error.message
+    if (error.message === 'Invalid login credentials') {
+      ptMessage = 'E-mail ou senha incorretos.'
+    } else if (error.message.includes('Email not confirmed')) {
+      ptMessage = 'E-mail não confirmado.'
+    }
+    
+    redirect(`/login?error=${encodeURIComponent(ptMessage)}`)
   }
 
   revalidatePath('/', 'layout')

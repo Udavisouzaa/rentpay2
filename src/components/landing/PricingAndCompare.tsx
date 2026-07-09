@@ -1,6 +1,8 @@
-"use client";
+'use client'
+
 import { useState } from "react";
 import { Check, Minus } from "lucide-react";
+import Link from "next/link";
 
 export function PricingAndCompare() {
   const [rent, setRent] = useState<number>(2500);
@@ -205,12 +207,12 @@ export function PricingAndCompare() {
                 </li>
               </ul>
 
-              <a 
-                href="#teste-agora" 
-                className="w-full py-4 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-2xl text-center transition-colors"
+              <Link 
+                href="/signup" 
+                className="w-full py-4 bg-white hover:bg-slate-50 text-slate-900 font-bold rounded-2xl text-center transition-colors block"
               >
                 Garantir 1º mês grátis
-              </a>
+              </Link>
               <p className="text-center text-xs text-slate-500 font-semibold uppercase tracking-wider mt-4">Sem fidelidade. Cancele quando quiser.</p>
             </div>
           </div>

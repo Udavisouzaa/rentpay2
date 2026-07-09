@@ -1,5 +1,5 @@
-"use client";
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -27,11 +27,13 @@ export function Hero() {
               O Alugho envia cobranças, lembretes, confirma pagamentos, organiza extratos e centraliza chamados de manutenção entre proprietário e inquilino.
             </p>
             
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center relative z-20">
-              <a href="/signup" className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all shadow-[0_8px_30px_rgb(15,23,42,0.2)] hover:shadow-[0_8px_30px_rgb(15,23,42,0.3)] hover:-translate-y-1 flex items-center justify-center">
-                Comece grátis agora
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
+            <div className="flex flex-col sm:flex-row items-center gap-6 mb-8 w-full sm:w-auto">
+              <Link 
+                href="/signup" 
+                className="px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-[0_8px_30px_rgb(15,23,42,0.2)] text-lg hover:bg-slate-800 hover:-translate-y-0.5 transition-all w-full sm:w-auto text-center"
+              >
+                Quero testar o Alugho
+              </Link>
               <div className="text-xs font-semibold text-slate-500 flex flex-col items-start gap-2 uppercase tracking-wider">
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500"/> Mensalidade fixa</span>
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500"/> Sem percentual</span>

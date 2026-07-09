@@ -1,13 +1,7 @@
-"use client";
 import { 
   MessageSquareWarning, 
   Clock, 
   Sparkles,
-  Home,
-  FileText,
-  UserPlus,
-  BadgeDollarSign,
-  PieChart,
   CheckCircle2,
   XCircle
 } from "lucide-react";

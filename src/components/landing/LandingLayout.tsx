@@ -1,6 +1,8 @@
-"use client";
+'use client'
+
 import { Menu, X } from "lucide-react";
 import React, { useState } from "react";
+import Link from "next/link";
 
 export function LandingLayout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +14,7 @@ export function LandingLayout({ children }: { children: React.ReactNode }) {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">a</div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">alugho</span>
+              <span className="text-xl font-bold tracking-tight text-slate-900">Alugho</span>
             </div>
             
             {/* Desktop Menu */}
@@ -20,13 +22,12 @@ export function LandingLayout({ children }: { children: React.ReactNode }) {
               <a href="#como-funciona" className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">Como funciona</a>
               <a href="#comparativo" className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">Comparativo</a>
               <a href="#planos" className="text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors">Planos</a>
-              <div className="w-px h-6 bg-slate-200 mx-2"></div>
-              <a href="/login" className="text-sm font-bold text-slate-700 hover:text-emerald-600 transition-colors">
+              <Link href="/login" className="text-sm font-bold text-slate-600 hover:text-emerald-600 transition-colors">
                 Entrar
-              </a>
-              <a href="/signup" className="px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-full shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 transition-colors">
-                Criar Conta
-              </a>
+              </Link>
+              <Link href="/signup" className="px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-full shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 transition-colors">
+                Quero testar o Alugho
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -41,18 +42,14 @@ export function LandingLayout({ children }: { children: React.ReactNode }) {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-4 shadow-sm">
+          <div className="md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-4">
             <a href="#como-funciona" onClick={() => setIsMenuOpen(false)} className="block text-sm font-medium text-slate-600">Como funciona</a>
             <a href="#comparativo" onClick={() => setIsMenuOpen(false)} className="block text-sm font-medium text-slate-600">Comparativo</a>
             <a href="#planos" onClick={() => setIsMenuOpen(false)} className="block text-sm font-medium text-slate-600">Planos</a>
-            <div className="border-t border-slate-100 pt-4 pb-2">
-              <a href="/login" onClick={() => setIsMenuOpen(false)} className="block text-center text-sm font-bold text-slate-700 mb-4 hover:text-emerald-600">
-                Entrar na minha conta
-              </a>
-              <a href="/signup" onClick={() => setIsMenuOpen(false)} className="block px-4 py-3 bg-emerald-600 text-white text-center text-sm font-bold rounded-xl shadow-md shadow-emerald-600/20">
-                Criar Conta Grátis
-              </a>
-            </div>
+            <Link href="/login" onClick={() => setIsMenuOpen(false)} className="block text-sm font-bold text-slate-600">Entrar</Link>
+            <Link href="/signup" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 bg-emerald-600 text-white text-center text-sm font-bold rounded-full shadow-lg shadow-emerald-600/20">
+              Quero testar o Alugho
+            </Link>
           </div>
         )}
       </header>

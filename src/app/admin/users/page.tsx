@@ -5,7 +5,7 @@ import { Users, Search, MoreVertical } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export default async function AdminUsersPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // No MVP, pegamos todos os proprietários da tabela 'properties' usando group by ou join
   // Mas como a Auth users não expõe email no select normal, para o admin painel funcionar 100%

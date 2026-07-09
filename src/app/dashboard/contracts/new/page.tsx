@@ -5,7 +5,7 @@ import { ArrowLeft, Save } from 'lucide-react'
 import { createContract } from '../actions'
 
 export default async function NewContractPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {

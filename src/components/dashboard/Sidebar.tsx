@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, HomeIcon, Users, Wrench, LogOut, Building2, CreditCard } from 'lucide-react'
+import { Home, HomeIcon, Users, Wrench, LogOut, Building2, CreditCard, FileText } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
@@ -12,6 +12,7 @@ export function Sidebar() {
   const menuItems = [
     { href: '/dashboard', icon: Home, label: 'Visão Geral' },
     { href: '/dashboard/properties', icon: HomeIcon, label: 'Imóveis' },
+    { href: '/dashboard/contracts', icon: FileText, label: 'Contratos' },
     { href: '/dashboard/tenants', icon: Users, label: 'Inquilinos' },
     { href: '/dashboard/maintenance', icon: Wrench, label: 'Manutenção' },
     { href: '/dashboard/billing', icon: CreditCard, label: 'Assinatura' },

@@ -12,10 +12,9 @@ export function LandingLayout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shrink-0 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">a</div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">Alugho</span>
-            </div>
+            <Link href="/" className="flex items-center gap-3 group">
+              <img src="/logo.png" alt="Alugho" className="h-10 w-auto object-contain rounded-lg shadow-sm" />
+            </Link>
             
             {/* Desktop Menu */}
             <nav className="hidden md:flex items-center gap-6">

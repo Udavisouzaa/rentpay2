@@ -21,11 +21,8 @@ export function LoginForm({ searchParams }: { searchParams?: { message?: string 
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="w-full max-w-md bg-white p-10 rounded-[2.5rem] shadow-2xl shadow-emerald-900/5 border border-slate-100 relative z-10"
       >
-        <div className="flex flex-col items-center mb-10">
-          <div className="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 mb-6">
-            <Building2 className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Alugho</h1>
+        <div className="flex flex-col items-center justify-center space-y-4 mb-8">
+          <img src="/logo.png" alt="Alugho" className="h-16 w-auto object-contain rounded-xl shadow-lg" />
           <p className="text-slate-500 text-sm font-medium mt-2 text-center">Gestão inteligente de aluguéis para locadores exigentes.</p>
         </div>
 

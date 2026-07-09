@@ -8,11 +8,8 @@ export function Topbar({ name, initials }: { name: string, initials: string }) {
   return (
     <header className="h-16 md:h-20 bg-white dark:bg-gray-800 border-b border-slate-200 dark:border-gray-700 px-4 md:px-10 flex items-center justify-between sticky top-0 z-10 shrink-0 transition-colors">
       <div className="flex items-center gap-4 flex-1">
-        <div className="flex items-center gap-2 md:hidden">
-          <div className="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20 shrink-0">
-            <Building2 className="w-4 h-4 text-white" />
-          </div>
-          <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">Alugho</span>
+        <div className="flex items-center md:hidden">
+          <img src="/logo.png" alt="Alugho" className="h-8 w-auto object-contain rounded-lg" />
         </div>
         <div className="hidden md:flex items-center bg-slate-50 dark:bg-gray-700 rounded-2xl px-4 py-2.5 w-96 border border-slate-200 dark:border-gray-600">
           <Search className="w-4 h-4 text-slate-400 shrink-0" />

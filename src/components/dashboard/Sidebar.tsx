@@ -33,12 +33,9 @@ export function Sidebar() {
     <>
       <aside className="w-64 bg-white dark:bg-gray-800 border-r border-slate-200 dark:border-gray-700 flex-col z-20 shrink-0 hidden md:flex h-full">
         <div className="p-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
-              <Building2 className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Alugho</span>
-          </div>
+          <div className="flex items-center justify-center py-6">
+          <img src="/logo.png" alt="Alugho" className="h-12 w-auto object-contain rounded-xl" />
+        </div>
         </div>
 
         <nav className="flex-1 px-4 space-y-1 mt-2 overflow-y-auto">

@@ -26,12 +26,14 @@ export default async function DashboardPage() {
 
   let recebidoNoMes = 0
   let emAtrasoCount = 0
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pendingInvoices: any[] = []
 
   if (invoices) {
     const currentMonth = new Date().getMonth()
     const currentYear = new Date().getFullYear()
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     invoices.forEach((inv: any) => {
       if (inv.status === 'atrasado') {
         emAtrasoCount++

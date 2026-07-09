@@ -5,6 +5,7 @@ export interface WebhookPayload {
   status: string;
   valor: number;
   data_pagamento: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any; // Permite outros campos adicionais do gateway
 }
 
@@ -65,6 +66,7 @@ export class WebhookValidationError extends Error {
  * @throws WebhookValidationError se o payload for inválido ou faltarem campos
  */
 export function parseWebhookPayload(rawBody: string): WebhookPayload {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let parsed: any;
   
   try {

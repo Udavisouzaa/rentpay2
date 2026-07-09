@@ -81,6 +81,7 @@ export async function createMaintenanceRequest(formData: FormData) {
       .eq('id', tenant.property_id)
       .single()
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const landlordEmail = (property?.users as any)?.email
 
     if (process.env.RESEND_API_KEY && landlordEmail) {

@@ -51,6 +51,7 @@ export default async function TenantPortalPage() {
 
   const tenantData = {
     name: tenant.nome,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     propertyAddress: Array.isArray(tenant.properties) ? tenant.properties[0]?.endereco : (tenant.properties as any)?.endereco || 'Desconhecido',
     ownerName: 'Administrador Alugho' // Poderíamos buscar o owner_id se tivéssemos a relação na tabela.
   }

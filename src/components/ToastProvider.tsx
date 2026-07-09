@@ -18,6 +18,7 @@ function ToastContent() {
     const isError = searchParams?.get('error')
 
     if (msg || isSuccess || isError) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMessage(msg || (isError ? String(isError) : 'Ação concluída com sucesso!'))
       setType(isError ? 'error' : 'success')
       setShow(true)
@@ -32,7 +33,7 @@ function ToastContent() {
 
       return () => clearTimeout(timer)
     }
-  }, [searchParams, pathname])
+  }, [searchParams, pathname, router])
 
   if (!show) return null
 

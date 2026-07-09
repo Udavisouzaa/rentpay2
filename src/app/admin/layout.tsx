@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, Users, LayoutDashboard, Settings, LogOut } from 'lucide-react'
+import { Shield, Users, LayoutDashboard, Settings, LogOut, MessageSquare } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -52,6 +52,10 @@ export default async function AdminLayout({
           <Link href="/admin/users" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
             <Users className="w-5 h-5" />
             <span className="font-medium">Locadores</span>
+          </Link>
+          <Link href="/admin/whatsapp-logs" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
+            <MessageSquare className="w-5 h-5" />
+            <span className="font-medium">Logs de WhatsApp</span>
           </Link>
           <Link href="/admin/settings" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-300 hover:text-white transition-colors">
             <Settings className="w-5 h-5" />

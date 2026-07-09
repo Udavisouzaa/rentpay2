@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, HomeIcon, Users, Wrench, LogOut, Building2, CreditCard, FileText } from 'lucide-react'
+import { Home, HomeIcon, Users, Wrench, LogOut, Building2, CreditCard, FileText, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
@@ -61,15 +61,22 @@ export function Sidebar() {
         </nav>
 
         <div className="p-4 mt-auto space-y-4">
-          <div className="bg-emerald-900 rounded-3xl p-6 text-white relative overflow-hidden hidden md:block">
+          <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-3xl p-5 border border-emerald-100 dark:border-emerald-800/30 text-emerald-900 dark:text-emerald-100 relative overflow-hidden hidden md:block group">
             <div className="relative z-10 text-left">
-              <p className="text-[10px] font-bold text-emerald-300 uppercase tracking-widest mb-1">Portal do Inquilino</p>
-              <p className="text-xs leading-relaxed opacity-80">Acesso rápido para moradores.</p>
-              <button onClick={copyTenantPortalLink} className="mt-3 w-full bg-white text-emerald-900 py-2 rounded-xl text-xs font-bold shadow-xl cursor-pointer hover:bg-slate-50 transition-colors">
-                Copiar Link
-              </button>
+              <div className="flex items-center gap-2 mb-2">
+                <MessageCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Precisa de Ajuda?</p>
+              </div>
+              <p className="text-xs leading-relaxed opacity-80 mb-3">Fale com nosso time de especialistas no WhatsApp.</p>
+              <a 
+                href="https://wa.me/5548992084726?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20meu%20painel%20Alugho!" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-emerald-600/20 cursor-pointer hover:bg-emerald-700 transition-colors"
+              >
+                Chamar Suporte
+              </a>
             </div>
-            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-700/50 rounded-full blur-2xl"></div>
           </div>
 
           <button 

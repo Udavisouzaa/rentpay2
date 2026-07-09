@@ -22,9 +22,8 @@ function ToastContent() {
       setType(isError ? 'error' : 'success')
       setShow(true)
 
-      // Remove as queries da URL para não aparecer novamente no refresh
-      const newUrl = pathname
-      window.history.replaceState({}, '', newUrl)
+      // Remove as queries da URL para não aparecer novamente no refresh usando o router do Next
+      router.replace(pathname, { scroll: false })
 
       // Esconde o toast após 4 segundos
       const timer = setTimeout(() => {

@@ -25,8 +25,8 @@ export async function signup(formData: FormData) {
   const { error: signUpError } = await supabase.auth.signUp(data)
 
   if (signUpError) {
-    console.error('Signup error:', signUpError.message)
-    redirect(`/signup?message=${encodeURIComponent(signUpError.message)}`)
+    console.error('Signup error:', signUpError)
+    redirect(`/signup?error=${encodeURIComponent(signUpError.message)}`)
   }
 
   // Tenta logar automaticamente (Fricção Zero)

@@ -112,11 +112,11 @@ export function BillingOverview({ subscription }: { subscription: SubscriptionDa
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
           
           <div className="relative z-10 flex-1 flex flex-col">
-            <h2 className="text-3xl font-black mb-2">Plano Pro</h2>
+            <h2 className="text-3xl font-black mb-2">Plano Controle</h2>
             <p className="text-slate-400 text-sm font-medium mb-8 max-w-sm">Tudo o que você precisa para escalar sua gestão de imóveis sem dor de cabeça.</p>
 
             <div className="mb-10">
-              <span className="text-5xl font-black tracking-tight">R$ 97</span>
+              <span className="text-5xl font-black tracking-tight">R$ 49,90</span>
               <span className="text-slate-400 font-bold">/mês</span>
             </div>
 

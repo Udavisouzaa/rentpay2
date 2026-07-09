@@ -1,3 +1,5 @@
+'use client'
+
 import { Bell, Search, Building2 } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { UserDropdown } from '@/components/UserDropdown'
@@ -25,7 +27,7 @@ export function Topbar({ name, initials }: { name: string, initials: string }) {
       <div className="flex items-center gap-4 md:gap-6">
         <ThemeToggle />
         <div className="relative">
-          <button className="w-10 h-10 bg-slate-50 dark:bg-gray-700 hover:bg-slate-100 dark:hover:bg-gray-600 rounded-full flex items-center justify-center border border-slate-200 dark:border-gray-600 transition-colors cursor-pointer group">
+          <button onClick={() => alert('Você não tem novas notificações no momento.')} className="w-10 h-10 bg-slate-50 dark:bg-gray-700 hover:bg-slate-100 dark:hover:bg-gray-600 rounded-full flex items-center justify-center border border-slate-200 dark:border-gray-600 transition-colors cursor-pointer group">
             <Bell className="w-4 h-4 text-slate-500 dark:text-gray-400 group-hover:text-slate-700 dark:group-hover:text-white" />
           </button>
           <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white dark:border-gray-800 rounded-full"></span>

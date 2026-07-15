@@ -31,6 +31,12 @@ export default async function DashboardLayout({
 
   const subscriptionStatus = sub?.status || 'none'
 
+  // Conta quantos imóveis o usuário já cadastrou (usado para o limite do plano gratuito)
+  const { count: propertyCount } = await supabase
+    .from('properties')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+
   return (
     <div className="flex h-screen bg-slate-50 dark:bg-gray-900 text-slate-800 font-sans overflow-hidden transition-colors">
       <Sidebar />
@@ -38,7 +44,7 @@ export default async function DashboardLayout({
         <Topbar name={name} initials={initials} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-10">
           <div className="mx-auto flex flex-col gap-8 min-h-full md:h-full max-w-7xl">
-            <SubscriptionGuard status={subscriptionStatus}>
+            <SubscriptionGuard status={subscriptionStatus} propertyCount={propertyCount || 0}>
               {children}
             </SubscriptionGuard>
           </div>

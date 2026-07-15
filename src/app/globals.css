@@ -1,23 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8faf9; /* leve tom esverdeado para um visual SaaS premium */
-  --foreground: #0f172a; /* slate-900 para texto estrutural com mais contraste */
+  /* Paleta "petróleo + cobre" — identidade própria, longe do azul/verde genérico de SaaS */
+  --background: #faf6f0; /* creme quente, não branco/cinza genérico */
+  --foreground: #171a21;
 
   --color-surface: #ffffff;
-  --color-border-subtle: #e7ebe9;
+  --color-border-subtle: #e7ded2;
 
-  /* Sombras em camadas para profundidade sutil (estilo "premium SaaS") */
-  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
-  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 12px 32px -8px rgba(15, 23, 42, 0.12), 0 4px 8px -4px rgba(15, 23, 42, 0.06);
-  --shadow-glow-emerald: 0 8px 24px -4px rgba(16, 185, 129, 0.18);
+  --color-primary: #0d3b3a; /* petróleo profundo */
+  --color-primary-dark: #082726;
+  --color-primary-soft: #e4efee;
 
-  --radius-sm: 0.625rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
-  --radius-xl: 2rem;
+  --color-accent: #d97706; /* cobre / âmbar vibrante */
+  --color-accent-dark: #b45309;
+  --color-accent-soft: #fef1de;
+
+  --color-sidebar-bg: #0b1220; /* navy quase preto para a sidebar */
+  --color-sidebar-border: #1f2937;
+  --color-sidebar-text: #9aa5b4;
+  --color-sidebar-text-active: #ffffff;
+
+  /* Sombras mantidas discretas: a diferenciação vem de cor/borda/espaçamento, não de sombra */
+  --shadow-xs: 0 1px 2px 0 rgba(13, 59, 58, 0.06);
+  --shadow-sm: 0 2px 6px 0 rgba(13, 59, 58, 0.08);
+  --shadow-md: 0 8px 20px -4px rgba(13, 59, 58, 0.14);
+  --shadow-lg: 0 20px 45px -12px rgba(13, 59, 58, 0.22);
+  --shadow-glow-accent: 0 10px 28px -6px rgba(217, 119, 6, 0.35);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
 }
 
 @theme inline {
@@ -30,9 +44,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0b0f14;
-    --foreground: #f1f5f4;
+    --foreground: #f1f0ec;
     --color-surface: #151b23;
     --color-border-subtle: #232b35;
+    --color-primary-soft: rgba(13, 59, 58, 0.35);
+    --color-accent-soft: rgba(217, 119, 6, 0.18);
   }
 }
 
@@ -44,14 +60,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection {
-  background-color: rgba(16, 185, 129, 0.2);
+h1, h2, h3 {
+  letter-spacing: -0.02em;
 }
 
-/* Scrollbar refinado para uma sensação premium */
+::selection {
+  background-color: rgba(217, 119, 6, 0.25);
+}
+
+/* Scrollbar refinado com identidade cobre */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
+  scrollbar-color: rgba(217, 119, 6, 0.35) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -60,6 +80,6 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(100, 116, 139, 0.35);
+  background-color: rgba(217, 119, 6, 0.35);
   border-radius: 999px;
 }

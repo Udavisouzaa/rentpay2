@@ -28,21 +28,21 @@ interface DashboardOverviewProps {
 
 export function DashboardOverview({ stats, invoices }: DashboardOverviewProps) {
   return (
-    <div className="space-y-8 flex-1 flex flex-col min-h-0">
+    <div className="space-y-12 flex-1 flex flex-col min-h-0">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Visão Geral</h1>
-          <p className="text-slate-500 dark:text-gray-400 mt-1 text-sm font-medium">Acompanhe o desempenho do seu portfólio.</p>
+          <h1 className="text-4xl md:text-5xl font-black text-[var(--color-primary)] dark:text-white tracking-tight">Visão Geral</h1>
+          <p className="text-slate-500 dark:text-gray-400 mt-3 text-base font-medium">Acompanhe o desempenho do seu portfólio.</p>
         </div>
-        <Link 
+        <Link
           href="/dashboard/properties/new"
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm shadow-emerald-500/20 transition-all cursor-pointer"
+          className="bg-[var(--color-accent)] hover:bg-[var(--color-accent-dark)] text-white px-6 py-3.5 rounded-xl text-sm font-black shadow-[var(--shadow-glow-accent)] transition-all cursor-pointer"
         >
           + Novo Imóvel
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {stats.map((stat, i) => (
           <StatCard key={stat.title} title={stat.title} value={stat.value} trend={stat.trend} isPositive={stat.isPositive} delay={i * 0.1}>
             {i === 0 && (
@@ -67,21 +67,21 @@ export function DashboardOverview({ stats, invoices }: DashboardOverviewProps) {
         ))}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 flex-1 min-h-[500px] lg:min-h-0">
+      <div className="flex flex-col lg:flex-row gap-10 flex-1 min-h-[500px] lg:min-h-0">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+          transition={{ delay: 0.4, duration: 0.55, ease: 'easeOut' }}
           className="lg:w-[60%] flex flex-col min-h-[400px] lg:min-h-0"
         >
-          <div className="flex items-center justify-between mb-4 px-1">
-            <h2 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <div className="flex items-center justify-between mb-5 px-1">
+            <h2 className="text-lg font-black text-[var(--color-primary)] dark:text-white flex items-center gap-2">
               Próximos Vencimentos
-              <span className="px-2 py-0.5 bg-slate-200/50 dark:bg-gray-700 text-slate-500 dark:text-gray-300 rounded text-[10px] font-black uppercase tracking-wider">{invoices.length} faturas</span>
+              <span className="px-2.5 py-1 bg-[var(--color-accent-soft)] text-[var(--color-accent-dark)] rounded-lg text-[10px] font-black uppercase tracking-wider">{invoices.length} faturas</span>
             </h2>
-            <Link href="/dashboard/invoices" className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline transition-all cursor-pointer uppercase tracking-wider">Ver todos</Link>
+            <Link href="/dashboard/invoices" className="text-[11px] font-bold text-[var(--color-accent-dark)] hover:underline transition-all cursor-pointer uppercase tracking-wider">Ver todos</Link>
           </div>
-          <div className="flex-1 bg-white dark:bg-gray-800 rounded-[1.75rem] border border-slate-200/80 dark:border-gray-700 overflow-hidden flex flex-col shadow-[var(--shadow-sm)] transition-colors">
+          <div className="flex-1 bg-[var(--color-surface)] dark:bg-gray-800 rounded-2xl border-2 border-[var(--color-border-subtle)] dark:border-gray-700 overflow-hidden flex flex-col shadow-[var(--shadow-sm)] transition-colors">
             <div className="overflow-x-auto flex-1">
               <table className="w-full text-left">
                 <thead className="bg-slate-50/50 dark:bg-gray-800/50 border-b border-slate-100 dark:border-gray-700">
@@ -124,28 +124,28 @@ export function DashboardOverview({ stats, invoices }: DashboardOverviewProps) {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
+          transition={{ delay: 0.5, duration: 0.55, ease: 'easeOut' }}
           className="lg:w-[40%] flex flex-col"
         >
-          <div className="flex items-center justify-between mb-4 px-1">
-            <h2 className="font-bold text-slate-900 dark:text-white">Receita Anual</h2>
-            <DollarSign className="w-4 h-4 text-slate-300 dark:text-gray-600" />
+          <div className="flex items-center justify-between mb-5 px-1">
+            <h2 className="text-lg font-black text-[var(--color-primary)] dark:text-white">Receita Anual</h2>
+            <DollarSign className="w-4 h-4 text-[var(--color-accent)]" />
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-[1.75rem] p-6 border border-slate-200/80 dark:border-gray-700 flex-1 flex flex-col shadow-[var(--shadow-sm)] transition-colors">
+          <div className="bg-[var(--color-primary)] rounded-2xl p-8 border-2 border-[var(--color-primary-dark)] flex-1 flex flex-col shadow-[var(--shadow-md)] transition-colors">
              <div className="flex-1 w-full flex items-end justify-between gap-2 pb-4">
                {[40, 60, 45, 80, 55, 90, 75, 100, 85, 95, 70, 110].map((h, i) => (
-                 <motion.div 
-                   key={i} 
+                 <motion.div
+                   key={i}
                    initial={{ height: 0 }}
                    animate={{ height: `${h}%` }}
                    transition={{ delay: 0.5 + (i * 0.05), duration: 0.8 }}
-                   className="w-full bg-emerald-500 rounded-t-lg opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+                   className="w-full bg-[var(--color-accent)] rounded-t-lg opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
                  />
                ))}
              </div>
-             <div className="w-full flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-gray-500 mt-2 border-t border-slate-100 dark:border-gray-700 pt-4">
+             <div className="w-full flex justify-between text-[10px] font-black uppercase tracking-wider text-emerald-100/60 mt-2 border-t border-white/10 pt-4">
                <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span><span>Nov</span><span>Dez</span>
              </div>
           </div>

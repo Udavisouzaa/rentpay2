@@ -15,25 +15,25 @@ interface Tenant {
 
 export function TenantsList({ tenants }: { tenants: Tenant[] }) {
   return (
-    <div className="space-y-8 flex-1 flex flex-col min-h-0">
+    <div className="space-y-10 flex-1 flex flex-col min-h-0">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Inquilinos</h1>
-          <p className="text-slate-500 dark:text-gray-400 mt-1 text-sm font-medium">Acompanhe o status e histórico de pagamentos.</p>
+          <h1 className="text-4xl md:text-5xl font-black text-[var(--color-primary)] dark:text-white tracking-tight">Inquilinos</h1>
+          <p className="text-slate-500 dark:text-gray-400 mt-3 text-base font-medium">Acompanhe o status e histórico de pagamentos.</p>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-[1.75rem] shadow-[var(--shadow-sm)] border border-slate-200/80 dark:border-gray-700 overflow-hidden flex flex-col flex-1 min-h-0 transition-colors">
-        <div className="p-6 border-b border-slate-100 dark:border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center bg-slate-50 dark:bg-gray-900 rounded-2xl px-4 py-2.5 w-full sm:w-80 border border-slate-200/60 dark:border-gray-700">
+      <div className="bg-[var(--color-surface)] dark:bg-gray-800 rounded-2xl shadow-[var(--shadow-sm)] border-2 border-[var(--color-border-subtle)] dark:border-gray-700 overflow-hidden flex flex-col flex-1 min-h-0 transition-colors">
+        <div className="p-7 border-b-2 border-[var(--color-border-subtle)] dark:border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center bg-[var(--background)] dark:bg-gray-900 rounded-xl px-4 py-3 w-full sm:w-80 border-2 border-[var(--color-border-subtle)] dark:border-gray-700 focus-within:border-[var(--color-accent)]">
             <Search className="w-4 h-4 text-slate-400 shrink-0" />
-            <input 
-              type="text" 
-              placeholder="Buscar inquilino..." 
+            <input
+              type="text"
+              placeholder="Buscar inquilino..."
               className="bg-transparent border-none outline-none ml-2 w-full text-sm font-medium placeholder:text-slate-400 dark:text-white"
             />
           </div>
-          <button className="flex items-center space-x-2 text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white px-4 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors cursor-pointer border border-transparent hover:border-slate-200 dark:hover:border-gray-600">
+          <button className="flex items-center space-x-2 text-slate-600 dark:text-gray-300 hover:text-[var(--color-accent-dark)] px-4 py-2.5 rounded-xl hover:bg-[var(--color-accent-soft)] dark:hover:bg-gray-700 transition-colors cursor-pointer border-2 border-transparent hover:border-[var(--color-accent)]/30">
             <Filter className="w-4 h-4" />
             <span className="text-xs font-bold uppercase tracking-wider">Filtrar</span>
           </button>

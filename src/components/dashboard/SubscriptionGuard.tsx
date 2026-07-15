@@ -1,18 +1,25 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { AlertTriangle, Lock } from 'lucide-react'
+import { Lock } from 'lucide-react'
 
-export function SubscriptionGuard({ status, children }: { status: string, children: React.ReactNode }) {
+// Plano gratuito: até 1 imóvel. Acima disso, é necessário assinatura ativa (ou em teste).
+const FREE_PROPERTY_LIMIT = 1
+
+export function SubscriptionGuard({ status, propertyCount, children }: { status: string, propertyCount: number, children: React.ReactNode }) {
   const pathname = usePathname()
-  
+
   // Se está na tela de cobrança, sempre libera a renderização
   if (pathname === '/dashboard/billing') {
     return <>{children}</>
   }
 
-  // Define os status que bloqueiam a plataforma
-  const isBlocked = status === 'past_due' || status === 'canceled' || status === 'none'
+  const isPaid = status === 'active' || status === 'trialing'
+
+  // Só bloqueia o dashboard quando o usuário já ultrapassou o limite do plano gratuito
+  // e não possui assinatura ativa. Isso libera a experiência inicial (cadastro do 1º imóvel)
+  // sem exigir pagamento antecipado.
+  const isBlocked = !isPaid && propertyCount > FREE_PROPERTY_LIMIT
 
   if (isBlocked) {
     return (
@@ -21,16 +28,16 @@ export function SubscriptionGuard({ status, children }: { status: string, childr
           <Lock className="w-10 h-10 text-rose-500" />
         </div>
         <div>
-          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-2">Acesso Restrito</h2>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-2">Limite do Plano Gratuito</h2>
           <p className="text-slate-500 dark:text-gray-400">
-            Sua assinatura do Alugho encontra-se inativa ou pendente. Para continuar gerenciando seus imóveis, regularize seu plano.
+            O plano gratuito permite gerenciar {FREE_PROPERTY_LIMIT} imóvel. Para continuar administrando os demais, assine o Alugho Pro.
           </p>
         </div>
-        <Link 
-          href="/dashboard/billing" 
+        <Link
+          href="/dashboard/billing"
           className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2"
         >
-          Regularizar Assinatura
+          Assinar Plano Pro
         </Link>
       </div>
     )

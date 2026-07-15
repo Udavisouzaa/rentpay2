@@ -1,11 +1,52 @@
 import Link from 'next/link'
+import { Lock } from 'lucide-react'
 import { createProperty } from '../actions'
+import { createClient } from '@/utils/supabase/server'
 
-export default function NewPropertyPage({
+const FREE_PROPERTY_LIMIT = 1
+
+export default async function NewPropertyPage({
   searchParams,
 }: {
-  searchParams: { error?: string }
+  searchParams: Promise<{ error?: string }>
 }) {
+  const { error } = await searchParams
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let isBlocked = false
+  if (user) {
+    const [{ count: propertyCount }, { data: sub }] = await Promise.all([
+      supabase.from('properties').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
+      supabase.from('subscriptions').select('status').eq('user_id', user.id).single(),
+    ])
+    const isPaid = sub?.status === 'active' || sub?.status === 'trialing'
+    isBlocked = !isPaid && (propertyCount || 0) >= FREE_PROPERTY_LIMIT
+  }
+
+  if (isBlocked) {
+    return (
+      <div className="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full text-center space-y-6">
+        <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto">
+          <Lock className="w-9 h-9 text-rose-500" />
+        </div>
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight mb-2">Limite do Plano Gratuito</h2>
+          <p className="text-slate-500">
+            O plano gratuito permite cadastrar {FREE_PROPERTY_LIMIT} imóvel. Assine o Alugho Pro para cadastrar imóveis ilimitados.
+          </p>
+        </div>
+        <Link
+          href="/dashboard/billing"
+          className="inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-emerald-600/20 transition-all"
+        >
+          Assinar Plano Pro
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
       <div className="mb-8">
@@ -17,9 +58,9 @@ export default function NewPropertyPage({
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
-        {searchParams.error && (
+        {error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
-            {searchParams.error}
+            {error}
           </div>
         )}
 

@@ -13,12 +13,15 @@ const supabase = createClient(
 
 export async function GET(request: Request) {
   try {
-    // PROTEÇÃO: Em produção, você verificaria um header de autorização (ex: Bearer token do Vercel Cron)
-    const url = new URL(request.url)
+    // PROTEÇÃO: exige o secret do Vercel Cron sempre que houver um configurado.
+    // O parâmetro ?test=true nunca deve bypassar a autenticação sozinho — só é
+    // aceito como alternativa quando CRON_SECRET não está definido (dev local).
     const authHeader = request.headers.get('authorization')
-    const isTest = url.searchParams.get('test') === 'true'
-    
-    if (process.env.NODE_ENV === 'production' && !isTest && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (process.env.CRON_SECRET) {
+      if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+        return new Response('Unauthorized', { status: 401 })
+      }
+    } else if (process.env.NODE_ENV === 'production') {
       return new Response('Unauthorized', { status: 401 })
     }
 

@@ -27,16 +27,19 @@ export async function POST(request: Request) {
 
   let event: Stripe.Event
 
-  // 1. Verificação oficial da assinatura do Stripe
+  // 1. Verificação oficial da assinatura do Stripe.
+  // Sem STRIPE_WEBHOOK_SECRET não há como validar a assinatura, então o
+  // webhook deve falhar fechado (rejeitar) em vez de confiar em um corpo
+  // não verificado — um corpo JSON arbitrário poderia ativar assinaturas
+  // ou marcar faturas como pagas sem nenhum pagamento real.
+  if (!endpointSecret) {
+    console.error('STRIPE_WEBHOOK_SECRET não definido. Rejeitando webhook (fail closed).')
+    return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 })
+  }
+
   try {
-    if (endpointSecret) {
-      event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret)
-      console.log('Assinatura validada com sucesso. Evento:', event.type)
-    } else {
-      // Fallback local se não houver secret (NÃO RECOMENDADO EM PRODUÇÃO)
-      console.warn('STRIPE_WEBHOOK_SECRET não definido, ignorando verificação (Apenas Dev).')
-      event = JSON.parse(rawBody) as Stripe.Event
-    }
+    event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret)
+    console.log('Assinatura validada com sucesso. Evento:', event.type)
   } catch (err: any) {
     console.error(`Falha na verificação da assinatura: ${err.message}`)
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 })
